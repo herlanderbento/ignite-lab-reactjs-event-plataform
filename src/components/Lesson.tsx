@@ -11,9 +11,16 @@ interface LessonsProps {
 
 export function Lesson(props: LessonsProps) {
   const isLessonsAvailable = isPast(props.availableAt)
-  const availableDateFormatted = format(props.availableAt, "EEEE ' • 'd ' de 'MMMM' • 'k'h'mm", {
+  
+  const availableDateFormatted = format(props.availableAt, 
+    "EEEE ' • 'd ' de 'MMMM' • 'k'h'mm", {
     locale: ptBR
   })
+
+  /**
+   * @param props
+   * @returns title, slug, availableAt, type 
+   */
 
   return (
     <a href="#">
