@@ -1,13 +1,13 @@
-import { Header } from "./components/Header"
-import { Events } from "./pages/Events"
+import { ApolloProvider } from "@apollo/client";
+import { client } from "./lib/apollo";
+import { Router } from "./Router";
 
 function App() {
-  
   return (
-    <>
-      <Events/>
-    </>
-  )
+    <ApolloProvider client={client}>
+      <Router />
+    </ApolloProvider>
+  );
 }
 
-export default App
+export default App;
