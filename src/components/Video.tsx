@@ -8,6 +8,8 @@ import {
 } from "phosphor-react";
 
 import "@vime/core/themes/default.css";
+import { RocketseatLogo } from "./RocketseatLogo";
+import { Footer } from "./Footer";
 
 const GET_LESSON_BY_SLUG_QUERY = gql`
   query GetLessonBySlug($slug: String) {
@@ -38,22 +40,22 @@ interface GetLessonBySlugResponse {
 }
 
 interface VideoProps {
-  lessonSlug: string;
+  lessonSlug: string | undefined;
 }
 
 export function Video(props: VideoProps) {
   const { data } = useQuery<GetLessonBySlugResponse>(GET_LESSON_BY_SLUG_QUERY, {
     variables: {
-      slug: props.lessonSlug
-    }
-  })
+      slug: props.lessonSlug,
+    },
+  });
 
-  if(!data){
+  if (!data || !data?.lesson.videoId) {
     return (
       <div className="flex-1">
         <p>Carregando...</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -67,15 +69,13 @@ export function Video(props: VideoProps) {
         </div>
       </div>
 
-      <div className="p-8 max-w-[1100px] mx-auto">
+      <div className="p-8 max-w-[1100px] mx-auto mb-20">
         <div className="flex items-start gap-16">
           <div className="flex-1">
-            <h1 className="text-lg font-bold">
-             {data.lesson.title}
-            </h1>
+            <h1 className="text-lg font-bold">{data.lesson.title}</h1>
 
             <p className="mt-4 text-gray-200 leading-relaxed">
-             {data.lesson.description}
+              {data.lesson.description}
             </p>
 
             <div className="flex items-center gap-4 mt-6">
@@ -88,7 +88,9 @@ export function Video(props: VideoProps) {
                 <strong className="font-bold text-2xl block">
                   {data.lesson.teacher.name}
                 </strong>
-                <span className="text-gray-200 text-sm block">{data.lesson.teacher.bio}</span>
+                <span className="text-gray-200 text-sm block">
+                  {data.lesson.teacher.bio}
+                </span>
               </div>
             </div>
           </div>
@@ -152,6 +154,7 @@ export function Video(props: VideoProps) {
           </a>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
